@@ -2,7 +2,8 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { fetchToken, loginAction } from '../redux/actions';
+import loginAction from '../redux/actions';
+import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
 import './Login.css';
 
 // import logo from './trivia.png';
@@ -37,12 +38,16 @@ class Login extends Component {
     }, this.validateForm);
   }
 
-  handleClick = () => {
+  handleClick = async () => {
     const { inputName, inputEmail } = this.state;
+    const { tokenToProps, questionsToProps } = this.props;
     const user = { name: inputName, gravatarEmail: inputEmail };
     const { dispatchLogin } = this.props;
     dispatchLogin(user);
-    tokenToProps();
+    const token = await tokenToProps();
+    console.log(token);
+    localStorage.setItem('token', token);
+    questionsToProps(token);
   }
 
   render() {
@@ -112,6 +117,7 @@ const mapDispatchToProps = (dispatch) => ({
     loginAction(user),
   ),
   tokenToProps: () => dispatch(fetchToken()),
+  questionsToProps: (token) => dispatch(fetchQuestions(token)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
