@@ -1,5 +1,9 @@
-import { requestQuestions, requestToken } from '../services/APIrequest';
-import { GET_QUESTIONS, GET_TOKEN } from './actions.types';
+import { requestQuestions, requestToken, requestGravatar } from '../services/APIrequest';
+import {
+  GET_QUESTIONS,
+  GET_TOKEN,
+  GET_GRAVATAR }
+from './actions.types';
 
 export const tokenAction = ({ token }) => ({
   type: GET_TOKEN,
@@ -33,6 +37,22 @@ export function fetchQuestions(token) {
         response_code: 3,
         results: [],
       }));
+    }
+  };
+}
+
+export const gravatarAction = (image) => ({
+  type: GET_GRAVATAR,
+  image,
+});
+
+export function fetchGravatar(email) {
+  return async (dispatch) => {
+    try {
+      const response = await requestGravatar(email);
+      dispatch(gravatarAction(response));
+    } catch (error) {
+      dispatch('error');
     }
   };
 }

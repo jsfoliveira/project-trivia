@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import loginAction from '../redux/actions';
-import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
-import { requestToken } from '../redux/services/APIrequest';
+import { fetchQuestions, fetchToken, fetchGravatar } from '../redux/actions/asyncActions';
+import { requestGravatar } from '../redux/services/APIrequest';
 import './Login.css';
 
 // import logo from './trivia.png';
@@ -20,7 +20,8 @@ class Login extends Component {
   }
 
   async componentDidMount() {
-    console.log(await requestToken());
+    // console.log(await requestToken());
+    console.log(await requestGravatar('wendryo.sales@gmail.com'));
   }
 
   validateForm = () => {
@@ -45,7 +46,7 @@ class Login extends Component {
 
   handleClick = async () => {
     const { inputName, inputEmail } = this.state;
-    const { tokenToProps, questionsToProps, token } = this.props;
+    const { tokenToProps, questionsToProps, token, gravatarToProps } = this.props;
     const user = { name: inputName, gravatarEmail: inputEmail };
     const { dispatchLogin } = this.props;
     dispatchLogin(user);
@@ -53,6 +54,8 @@ class Login extends Component {
     console.log(test);
     localStorage.setItem('token', token);
     questionsToProps(token);
+    gravatarToProps(inputEmail);
+    console.log(inputEmail);
   }
 
   render() {
@@ -96,15 +99,19 @@ class Login extends Component {
               We will never share your email with anyone else.
             </div>
           </div>
-          <button
-            type="button"
-            className="btn btn-primary"
-            data-testid="btn-play"
-            disabled={ turnOn }
-            onClick={ this.handleClick }
+          <Link
+            to="/game"
           >
-            Play
-          </button>
+            <button
+              type="button"
+              className="btn btn-primary"
+              data-testid="btn-play"
+              disabled={ turnOn }
+              onClick={ this.handleClick }
+            >
+              Play
+            </button>
+          </Link>
           <Link to="/setting">
             <button
               type="button"
@@ -125,6 +132,7 @@ Login.propTypes = {
   tokenToProps: PropTypes.func.isRequired,
   questionsToProps: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
+  gravatarToProps: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -133,6 +141,7 @@ const mapDispatchToProps = (dispatch) => ({
   ),
   tokenToProps: () => dispatch(fetchToken()),
   questionsToProps: (token) => dispatch(fetchQuestions(token)),
+  gravatarToProps: (email) => dispatch(fetchGravatar(email)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
