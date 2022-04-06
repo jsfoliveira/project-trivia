@@ -1,9 +1,12 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import loginAction from '../redux/actions';
+import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
+import { requestToken } from '../redux/services/APIrequest';
 import './Login.css';
+
 // import logo from './trivia.png';
 
 class Login extends Component {
@@ -14,6 +17,10 @@ class Login extends Component {
       inputEmail: '',
       turnOn: true,
     };
+  }
+
+  async componentDidMount() {
+    console.log(await requestToken());
   }
 
   validateForm = () => {
@@ -36,11 +43,16 @@ class Login extends Component {
     }, this.validateForm);
   }
 
-  handleClick = () => {
+  handleClick = async () => {
     const { inputName, inputEmail } = this.state;
+    const { tokenToProps, questionsToProps, token } = this.props;
     const user = { name: inputName, gravatarEmail: inputEmail };
     const { dispatchLogin } = this.props;
     dispatchLogin(user);
+    const test = await tokenToProps();
+    console.log(test);
+    localStorage.setItem('token', token);
+    questionsToProps(token);
   }
 
   render() {
@@ -110,12 +122,17 @@ class Login extends Component {
 
 Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
+  tokenToProps: PropTypes.func.isRequired,
+  questionsToProps: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchLogin: (user) => dispatch(
     loginAction(user),
   ),
+  tokenToProps: () => dispatch(fetchToken()),
+  questionsToProps: (token) => dispatch(fetchQuestions(token)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
