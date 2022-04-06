@@ -19,11 +19,12 @@ class Game extends React.Component {
 
   renderAnswer = () => {
     const { token: { results } } = this.props;
-    // const random = Math.floor(Math.random() * (results[0].incorrect_answers.length + 1));
-    console.log(results);
-    const arrayRespostas = results[0].incorrect_answers.concat(results[0].correct_answer);
+    const random = Math.floor(Math.random() * (results[0].incorrect_answers.length + 1));
+    const wrong = results[0].incorrect_answers;
+    const right = (results[0].correct_answer);
+    wrong.splice(random, 0, right);
     this.setState({
-      answers: arrayRespostas,
+      answers: wrong,
     });
   }
 
@@ -45,7 +46,21 @@ class Game extends React.Component {
           answers
           && (
             answers.map(
-              (answer) => <button key={ answer } data-testid={if answer = anwser = data correto} type="button">{answer}</button>,
+              (answer, index) => {
+                let testid = '';
+                if (answer === results[0].correct_answer) {
+                  testid = 'correct-answer';
+                } else { testid = `wrong-answer-${index}`; }
+                return (
+                  <button
+                    key={ answer }
+                    data-testid={ testid }
+                    type="button"
+                  >
+                    {answer}
+
+                  </button>);
+              },
             )
           )
         }
