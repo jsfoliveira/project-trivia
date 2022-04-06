@@ -40,11 +40,11 @@ class Login extends Component {
 
   handleClick = async () => {
     const { inputName, inputEmail } = this.state;
-    const { tokenToProps, questionsToProps } = this.props;
+    const { tokenToProps, questionsToProps, token } = this.props;
     const user = { name: inputName, gravatarEmail: inputEmail };
     const { dispatchLogin } = this.props;
     dispatchLogin(user);
-    const token = await tokenToProps();
+    await tokenToProps();
     console.log(token);
     localStorage.setItem('token', token);
     questionsToProps(token);
@@ -110,6 +110,8 @@ class Login extends Component {
 
 Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
+  tokenToProps: PropTypes.func.isRequired,
+  questionsToProps: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
