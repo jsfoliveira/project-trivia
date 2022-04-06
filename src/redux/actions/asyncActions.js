@@ -6,9 +6,9 @@ export const tokenAction = ({ token }) => ({
   token,
 });
 
-export const questionAction = ({ response_code, results }) => ({
+export const questionAction = ({ response, results }) => ({
   type: GET_QUESTIONS,
-  response_code,
+  response_code: response,
   results,
 });
 
@@ -18,7 +18,7 @@ export function fetchToken() {
       const response = await requestToken();
       dispatch(tokenAction(response));
     } catch (error) {
-      dispatch(error('errouuuuu'));
+      dispatch(error);
     }
   };
 }

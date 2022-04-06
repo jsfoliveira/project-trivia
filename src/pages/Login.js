@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import loginAction from '../redux/actions';
 import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
+import { requestToken } from '../redux/services/APIrequest';
 import './Login.css';
 
 // import logo from './trivia.png';
@@ -16,6 +17,10 @@ class Login extends Component {
       inputEmail: '',
       turnOn: true,
     };
+  }
+
+  async componentDidMount() {
+    console.log(await requestToken());
   }
 
   validateForm = () => {
@@ -44,8 +49,8 @@ class Login extends Component {
     const user = { name: inputName, gravatarEmail: inputEmail };
     const { dispatchLogin } = this.props;
     dispatchLogin(user);
-    await tokenToProps();
-    console.log(token);
+    const test = await tokenToProps();
+    console.log(test);
     localStorage.setItem('token', token);
     questionsToProps(token);
   }
