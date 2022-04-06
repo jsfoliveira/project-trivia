@@ -52,7 +52,7 @@ export function fetchGravatar(email) {
       const response = await requestGravatar(email);
       dispatch(gravatarAction(response));
     } catch (error) {
-      dispatch('error');
+      dispatch(error);
     }
   };
 }

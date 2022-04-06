@@ -46,16 +46,23 @@ class Login extends Component {
 
   handleClick = async () => {
     const { inputName, inputEmail } = this.state;
-    const { tokenToProps, questionsToProps, token, gravatarToProps } = this.props;
+
+    const {
+      tokenToProps,
+      questionsToProps,
+      token,
+      gravatarToProps,
+      history,
+      dispatchLogin,
+    } = this.props;
+
     const user = { name: inputName, gravatarEmail: inputEmail };
-    const { dispatchLogin } = this.props;
     dispatchLogin(user);
-    const test = await tokenToProps();
-    console.log(test);
+    await tokenToProps();
     localStorage.setItem('token', token);
     questionsToProps(token);
     gravatarToProps(inputEmail);
-    console.log(inputEmail);
+    history.push('/game');
   }
 
   render() {
@@ -99,19 +106,15 @@ class Login extends Component {
               We will never share your email with anyone else.
             </div>
           </div>
-          <Link
-            to="/game"
+          <button
+            type="button"
+            className="btn btn-primary"
+            data-testid="btn-play"
+            disabled={ turnOn }
+            onClick={ this.handleClick }
           >
-            <button
-              type="button"
-              className="btn btn-primary"
-              data-testid="btn-play"
-              disabled={ turnOn }
-              onClick={ this.handleClick }
-            >
-              Play
-            </button>
-          </Link>
+            Play
+          </button>
           <Link to="/setting">
             <button
               type="button"

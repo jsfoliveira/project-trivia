@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 class Header extends Component {
   render() {
     const { namePlayer, scorePlayer, imageGravatar } = this.props;
-    console.log(imageGravatar);
     return (
       <header>
         <h1
