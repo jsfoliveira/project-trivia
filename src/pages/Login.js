@@ -1,8 +1,10 @@
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import PropTypes from 'prop-types';
-import loginAction from '../redux/actions';
+import { Link } from 'react-router-dom';
+import { fetchToken, loginAction } from '../redux/actions';
 import './Login.css';
+
 // import logo from './trivia.png';
 
 class Login extends Component {
@@ -40,6 +42,7 @@ class Login extends Component {
     const user = { name: inputName, gravatarEmail: inputEmail };
     const { dispatchLogin } = this.props;
     dispatchLogin(user);
+    tokenToProps();
   }
 
   render() {
@@ -83,15 +86,17 @@ class Login extends Component {
               We will never share your email with anyone else.
             </div>
           </div>
-          <button
-            type="button"
-            className="btn btn-primary"
-            data-testid="btn-play"
-            disabled={ turnOn }
-            onClick={ this.handleClick }
-          >
-            Play
-          </button>
+          <Link to="/game">
+            <button
+              type="button"
+              className="btn btn-primary"
+              data-testid="btn-play"
+              disabled={ turnOn }
+              onClick={ this.handleClick }
+            >
+              Play
+            </button>
+          </Link>
         </form>
       </div>
     );
@@ -106,6 +111,7 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchLogin: (user) => dispatch(
     loginAction(user),
   ),
+  tokenToProps: () => dispatch(fetchToken()),
 });
 
 export default connect(null, mapDispatchToProps)(Login);
