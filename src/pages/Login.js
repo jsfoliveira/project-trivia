@@ -96,17 +96,24 @@ class Login extends Component {
               We will never share your email with anyone else.
             </div>
           </div>
-          <Link to="/game">
+          <button
+            type="button"
+            className="btn btn-primary"
+            data-testid="btn-play"
+            disabled={ turnOn }
+            onClick={ this.handleClick }
+          >
+            Play
+          </button>
+          <Link to="/setting">
             <button
               type="button"
-              className="btn btn-primary"
-              data-testid="btn-play"
-              disabled={ turnOn }
-              onClick={ this.handleClick }
+              data-testid="btn-settings"
             >
-              Play
+              Configurações
             </button>
           </Link>
+
         </form>
       </div>
     );
@@ -117,6 +124,7 @@ Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
   tokenToProps: PropTypes.func.isRequired,
   questionsToProps: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
