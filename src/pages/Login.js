@@ -42,7 +42,7 @@ class Login extends Component {
     const { inputName, inputEmail } = this.state;
     const {
       tokenToProps,
-      questionsToProps,
+      // questionsToProps,
       history,
       dispatchLogin,
     } = this.props;
@@ -51,7 +51,7 @@ class Login extends Component {
     await tokenToProps();
     const { token } = this.props;
     localStorage.setItem('token', token);
-    questionsToProps(token);
+    // questionsToProps(token);
     history.push('/game');
   }
 
@@ -124,7 +124,7 @@ Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
   tokenToProps: PropTypes.func.isRequired,
   token: PropTypes.string,
-  questionsToProps: PropTypes.func.isRequired,
+  // questionsToProps: PropTypes.func.isRequired,
   history: PropTypes.objectOf(PropTypes.string, PropTypes.number).isRequired,
 };
 

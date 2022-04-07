@@ -12,19 +12,13 @@ class Game extends React.Component {
     };
   }
 
-  componentDidMount() {
-    const { token: { token }, tokenToProps } = this.props;
-    if (token !== '') {
-      this.renderAnswer();
-    } else {
-      tokenToProps();
-      this.renderAnswer();
-    }
+  async componentDidMount() {
+    const { token: { token }, questionsToProps } = this.props;
+    await questionsToProps(token);
+    this.renderAnswer();
   }
 
   renderAnswer = () => {
-    const { token: { token }, questionsToProps } = this.props;
-    questionsToProps(token);
     const { questions: { results } } = this.props;
     console.log(this.props);
     const random = Math.floor(Math.random() * (results[0].incorrect_answers.length + 1));
@@ -37,8 +31,8 @@ class Game extends React.Component {
   }
 
   render() {
-    console.log(this.props);
     const { questions: { results } } = this.props;
+    console.log(results);
     const { answers } = this.state;
     return (
       <div>
@@ -81,6 +75,9 @@ class Game extends React.Component {
 
 Game.propTypes = {
   questions: PropTypes.objectOf(PropTypes.array, PropTypes.string).isRequired,
+  questionsToProps: PropTypes.func.isRequired,
+  // tokenToProps: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = (state) => ({
