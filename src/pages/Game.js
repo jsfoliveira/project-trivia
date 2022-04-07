@@ -20,10 +20,10 @@ class Game extends React.Component {
 
   renderAnswer = () => {
     const { questions: { results } } = this.props;
-    console.log(this.props);
-    const random = Math.floor(Math.random() * (results[0].incorrect_answers.length + 1));
+    const random = Math.floor(Math.random() * ((results[0].incorrect_answers.length + 1) - 0) + 0);
+    console.log(random);
     const wrong = results[0].incorrect_answers;
-    const right = (results[0].correct_answer);
+    const right = results[0].correct_answer;
     wrong.splice(random, 0, right);
     this.setState({
       answers: wrong,
@@ -32,7 +32,6 @@ class Game extends React.Component {
 
   render() {
     const { questions: { results } } = this.props;
-    console.log(results);
     const { answers } = this.state;
     return (
       <div>
@@ -46,8 +45,9 @@ class Game extends React.Component {
               <p data-testid="question-text">{results[0].question}</p>
             </div>)
         }
-        {
-          answers
+        <div data-testid="answer-options">
+          {
+            answers
           && (
             answers.map(
               (answer, index) => {
@@ -67,7 +67,8 @@ class Game extends React.Component {
               },
             )
           )
-        }
+          }
+        </div>
       </div>
     );
   }
@@ -76,7 +77,6 @@ class Game extends React.Component {
 Game.propTypes = {
   questions: PropTypes.objectOf(PropTypes.array, PropTypes.string).isRequired,
   questionsToProps: PropTypes.func.isRequired,
-  // tokenToProps: PropTypes.func.isRequired,
   token: PropTypes.string.isRequired,
 };
 
