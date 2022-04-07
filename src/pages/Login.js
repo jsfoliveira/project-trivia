@@ -18,6 +18,11 @@ class Login extends Component {
     };
   }
 
+  componentDidMount() {
+    const { tokenToProps } = this.props;
+    tokenToProps();
+  }
+
   validateForm = () => {
     const { inputName, inputEmail } = this.state;
     if (inputName !== '' && inputEmail !== '') {
@@ -41,18 +46,21 @@ class Login extends Component {
   handleClick = async () => {
     const { inputName, inputEmail } = this.state;
     const {
-      tokenToProps,
-      // questionsToProps,
+      questionsToProps,
       history,
       dispatchLogin,
     } = this.props;
     const user = { name: inputName, gravatarEmail: inputEmail };
     dispatchLogin(user);
-    await tokenToProps();
+
     const { token } = this.props;
     localStorage.setItem('token', token);
-    // questionsToProps(token);
-    history.push('/game');
+    const resposta = await questionsToProps(token);
+    console.log(resposta);
+    if (resposta.results.length > 0) {
+      history.push('/game');
+      console.log('XABLAU');
+    }
   }
 
   render() {
@@ -124,7 +132,7 @@ Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
   tokenToProps: PropTypes.func.isRequired,
   token: PropTypes.string,
-  // questionsToProps: PropTypes.func.isRequired,
+  questionsToProps: PropTypes.func.isRequired,
   history: PropTypes.objectOf(PropTypes.string, PropTypes.number).isRequired,
 };
 
@@ -134,6 +142,7 @@ Login.defaultProps = {
 
 const mapStateToProps = (state) => ({
   token: state.token.token,
+  questions: state.questions,
 });
 
 const mapDispatchToProps = (dispatch) => ({

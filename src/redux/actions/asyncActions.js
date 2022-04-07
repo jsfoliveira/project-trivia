@@ -24,15 +24,17 @@ export function fetchToken() {
 }
 
 export function fetchQuestions(token) {
+  console.log('token', token);
   return async (dispatch) => {
     try {
       const response = await requestQuestions(token);
       dispatch(questionAction(response));
+      return response;
     } catch (error) {
-      dispatch(error({
-        response_code: 3,
-        results: [],
-      }));
+      // dispatch(error({
+      //   response_code: 3,
+      //   results: [],
+      // }));
     }
   };
 }
