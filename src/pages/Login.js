@@ -133,7 +133,11 @@ Login.propTypes = {
   tokenToProps: PropTypes.func.isRequired,
   token: PropTypes.string,
   questionsToProps: PropTypes.func.isRequired,
-  history: PropTypes.objectOf(PropTypes.string, PropTypes.number).isRequired,
+  history: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
 };
 
 Login.defaultProps = {
