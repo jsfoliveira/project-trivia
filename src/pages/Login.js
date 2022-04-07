@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import loginAction from '../redux/actions';
 import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
-import { requestToken } from '../redux/services/APIrequest';
 import './Login.css';
 
 // import logo from './trivia.png';
@@ -17,10 +16,6 @@ class Login extends Component {
       inputEmail: '',
       turnOn: true,
     };
-  }
-
-  async componentDidMount() {
-    console.log(await requestToken());
   }
 
   validateForm = () => {
@@ -45,14 +40,21 @@ class Login extends Component {
 
   handleClick = async () => {
     const { inputName, inputEmail } = this.state;
-    const { tokenToProps, questionsToProps, token } = this.props;
+
+    const {
+      tokenToProps,
+      questionsToProps,
+      token,
+      history,
+      dispatchLogin,
+    } = this.props;
+
     const user = { name: inputName, gravatarEmail: inputEmail };
-    const { dispatchLogin } = this.props;
     dispatchLogin(user);
-    const test = await tokenToProps();
-    console.log(test);
+    await tokenToProps();
     localStorage.setItem('token', token);
     questionsToProps(token);
+    history.push('/game');
   }
 
   render() {
@@ -124,7 +126,12 @@ Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
   tokenToProps: PropTypes.func.isRequired,
   questionsToProps: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
+  token: PropTypes.string,
+  history: PropTypes.objectOf(PropTypes.string, PropTypes.number).isRequired,
+};
+
+Login.defaultProps = {
+  token: '',
 };
 
 const mapDispatchToProps = (dispatch) => ({
