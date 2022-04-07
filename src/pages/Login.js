@@ -52,14 +52,10 @@ class Login extends Component {
     } = this.props;
     const user = { name: inputName, gravatarEmail: inputEmail };
     dispatchLogin(user);
-
     const { token } = this.props;
-    localStorage.setItem('token', token);
     const resposta = await questionsToProps(token);
-    console.log(resposta);
     if (resposta.results.length > 0) {
       history.push('/game');
-      console.log('XABLAU');
     }
   }
 
