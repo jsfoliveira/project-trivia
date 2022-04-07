@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-
 class Header extends Component {
   render() {
     const { namePlayer, scorePlayer, emailPlayer } = this.props;
