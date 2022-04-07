@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
-import { fetchQuestions } from '../redux/actions/asyncActions';
+import Header from '../components/Header';
+import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
 
 class Game extends React.Component {
   constructor() {
@@ -11,14 +12,21 @@ class Game extends React.Component {
     };
   }
 
-  async componentDidMount() {
-    // const { token, questionsToProps } = this.props;
-    // await questionsToProps(token);
-    this.renderAnswer();
+  componentDidMount() {
+    const { token: { token }, tokenToProps } = this.props;
+    if (token !== '') {
+      this.renderAnswer();
+    } else {
+      tokenToProps();
+      this.renderAnswer();
+    }
   }
 
   renderAnswer = () => {
-    const { token: { results } } = this.props;
+    const { token: { token }, questionsToProps } = this.props;
+    questionsToProps(token);
+    const { questions: { results } } = this.props;
+    console.log(this.props);
     const random = Math.floor(Math.random() * (results[0].incorrect_answers.length + 1));
     const wrong = results[0].incorrect_answers;
     const right = (results[0].correct_answer);
@@ -29,11 +37,13 @@ class Game extends React.Component {
   }
 
   render() {
-    const { token: { results } } = this.props;
+    console.log(this.props);
+    const { questions: { results } } = this.props;
     const { answers } = this.state;
     return (
       <div>
         <h2>Game!</h2>
+        <Header />
         {
           results
           && (
@@ -70,16 +80,16 @@ class Game extends React.Component {
 }
 
 Game.propTypes = {
-  token: PropTypes.string.isRequired,
-  results: PropTypes.arrayOf(PropTypes.object).isRequired,
-  questionsToProps: PropTypes.func.isRequired,
+  questions: PropTypes.objectOf(PropTypes.array, PropTypes.string).isRequired,
 };
 
 const mapStateToProps = (state) => ({
   token: state.token,
+  questions: state.questions,
 });
 
 const mapDispatchToProps = (dispatch) => ({
+  tokenToProps: () => dispatch(fetchToken()),
   questionsToProps: (token) => dispatch(fetchQuestions(token)),
 });
 

@@ -6,7 +6,6 @@ import loginAction from '../redux/actions';
 import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
 import './Login.css';
 
-
 // import logo from './trivia.png';
 
 class Login extends Component {
@@ -41,13 +40,19 @@ class Login extends Component {
 
   handleClick = async () => {
     const { inputName, inputEmail } = this.state;
-    const { tokenToProps, questionsToProps } = this.props;
+    const {
+      tokenToProps,
+      questionsToProps,
+      history,
+      dispatchLogin,
+    } = this.props;
     const user = { name: inputName, gravatarEmail: inputEmail };
-    const { dispatchLogin } = this.props;
     dispatchLogin(user);
     await tokenToProps();
     const { token } = this.props;
-    await questionsToProps(token);
+    localStorage.setItem('token', token);
+    questionsToProps(token);
+    history.push('/game');
   }
 
   render() {
@@ -91,17 +96,15 @@ class Login extends Component {
               We will never share your email with anyone else.
             </div>
           </div>
-          <Link to="/game">
-            <button
-              type="button"
-              className="btn btn-primary"
-              data-testid="btn-play"
-              disabled={ turnOn }
-              onClick={ this.handleClick }
-            >
-              Play
-            </button>
-          </Link>
+          <button
+            type="button"
+            className="btn btn-primary"
+            data-testid="btn-play"
+            disabled={ turnOn }
+            onClick={ this.handleClick }
+          >
+            Play
+          </button>
           <Link to="/setting">
             <button
               type="button"
@@ -120,9 +123,18 @@ class Login extends Component {
 Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
   tokenToProps: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
+  token: PropTypes.string,
   questionsToProps: PropTypes.func.isRequired,
+  history: PropTypes.objectOf(PropTypes.string, PropTypes.number).isRequired,
 };
+
+Login.defaultProps = {
+  token: '',
+};
+
+const mapStateToProps = (state) => ({
+  token: state.token.token,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchLogin: (user) => dispatch(
@@ -132,4 +144,4 @@ const mapDispatchToProps = (dispatch) => ({
   questionsToProps: (token) => dispatch(fetchQuestions(token)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

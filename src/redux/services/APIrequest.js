@@ -1,3 +1,5 @@
+import md5 from 'crypto-js/md5';
+
 const APIURL = 'https://opentdb.com/api_token.php?command=request';
 
 export const requestToken = async () => {
@@ -12,4 +14,10 @@ export const requestQuestions = async (token) => {
   const json = await response.json();
 
   return response.ok ? Promise.resolve(json) : Promise.reject(json);
+};
+
+export const requestGravatar = async (email) => {
+  const hash = md5(email).toString();
+  const response = await fetch(`https://www.gravatar.com/avatar/${hash}`);
+  return response;
 };

@@ -1,15 +1,19 @@
-import { GET_QUESTIONS, GET_TOKEN } from '../actions/actions.types';
+import { GET_TOKEN } from '../actions/actions.types';
 
-const INITIAL_STATE = '';
+const INITIAL_STATE = {
+  token: '',
+  response_code: 0,
+  response_message: '',
+};
 
 const token = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case GET_TOKEN:
-    return action.token;
-  case GET_QUESTIONS:
     return {
+      ...state,
+      token: action.token,
       response_code: action.response_code,
-      results: action.results,
+      response_message: action.response_message,
     };
   default:
     return state;
