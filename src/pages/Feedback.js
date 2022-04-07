@@ -1,39 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 
 class Feedback extends React.Component {
-  // constructor(props) {
-  //   super(props);
-  //   this.state = {
-  //     feedback: '',
-  //   };
-  // }
-
-  // componentDidMount() {
-  //   const { scorePlayer } = this.props;
-  //   const rightAnswer = 'Well Done!';
-  //   const wrongAnswer = 'Could be better...';
-  //   const numberMin = 3;
-  //   if (scorePlayer < numberMin) {
-  //     this.setState({
-  //       feedback: wrongAnswer,
-  //     });
-  //   } if (scorePlayer > numberMin) {
-  //     this.setState({
-  //       feedback: rightAnswer,
-  //     });
-  //   }
-  // }
-
   render() {
-    const { scorePlayer } = this.props;
-    // const { feedback } = this.state;
+    const { scorePlayer, correctAnswer } = this.props;
     const rightAnswer = 'Well Done!';
     const wrongAnswer = 'Could be better...';
     const numberMin = 3;
-    const mensagem = scorePlayer >= numberMin ? rightAnswer : wrongAnswer;
+    const mensagem = correctAnswer >= numberMin ? rightAnswer : wrongAnswer;
     return (
       <div>
         <Header />
@@ -41,8 +18,29 @@ class Feedback extends React.Component {
           data-testid="feedback-text"
         >
           { mensagem }
-          {/* { feedback } */}
         </h1>
+        <div>
+          <p
+            data-testid="feedback-total-score"
+          >
+            Score total:
+            { scorePlayer }
+          </p>
+          <p
+            data-testid="feedback-total-question"
+          >
+            Quantidade respostas certas:
+            { correctAnswer }
+          </p>
+        </div>
+        <Link to="/">
+          <button
+            type="button"
+            data-testid="btn-play-again"
+          >
+            Play Again
+          </button>
+        </Link>
       </div>
     );
   }
@@ -50,10 +48,12 @@ class Feedback extends React.Component {
 
 const mapStateToProps = (state) => ({
   scorePlayer: state.player.score,
+  // correctAnswer: state.player. (ainda não tenho essa informação)
 });
 
 Feedback.propTypes = {
-  scorePlayer: PropTypes.string.isRequired,
+  scorePlayer: PropTypes.number.isRequired,
+  correctAnswer: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);
