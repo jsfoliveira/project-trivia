@@ -3,8 +3,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import loginAction from '../redux/actions';
-import { fetchToken } from '../redux/actions/asyncActions';
+import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
 import './Login.css';
+
 
 // import logo from './trivia.png';
 
@@ -40,11 +41,13 @@ class Login extends Component {
 
   handleClick = async () => {
     const { inputName, inputEmail } = this.state;
-    const { tokenToProps } = this.props;
+    const { tokenToProps, questionsToProps } = this.props;
     const user = { name: inputName, gravatarEmail: inputEmail };
     const { dispatchLogin } = this.props;
     dispatchLogin(user);
     await tokenToProps();
+    const { token } = this.props;
+    await questionsToProps(token);
   }
 
   render() {
@@ -117,6 +120,8 @@ class Login extends Component {
 Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
   tokenToProps: PropTypes.func.isRequired,
+  token: PropTypes.string.isRequired,
+  questionsToProps: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({
@@ -124,6 +129,7 @@ const mapDispatchToProps = (dispatch) => ({
     loginAction(user),
   ),
   tokenToProps: () => dispatch(fetchToken()),
+  questionsToProps: (token) => dispatch(fetchQuestions(token)),
 });
 
 export default connect(null, mapDispatchToProps)(Login);

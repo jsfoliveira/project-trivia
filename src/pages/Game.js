@@ -12,8 +12,8 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
-    const { token, questionsToProps } = this.props;
-    await questionsToProps(token);
+    // const { token, questionsToProps } = this.props;
+    // await questionsToProps(token);
     this.renderAnswer();
   }
 
