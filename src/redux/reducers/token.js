@@ -6,12 +6,11 @@ const token = (state = INITIAL_STATE, action) => {
   switch (action.type) {
   case GET_TOKEN:
     return action.token;
-  // case GET_QUESTIONS:
-  //   return {
-  //     ...state,
-  //     response_code: action.response_code,
-  //     results: action.results,
-  //   };
+    //   ...state,
+    //   token: action.token,
+    //   response_code: action.response_code,
+    //   response_message: action.response_message,
+    // };
   default:
     return state;
   }

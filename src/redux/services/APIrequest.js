@@ -18,7 +18,6 @@ export const requestQuestions = async (token) => {
 
 export const requestGravatar = async (email) => {
   const hash = md5(email).toString();
-  console.log(hash);
   const response = await fetch(`https://www.gravatar.com/avatar/${hash}`);
   return response;
 };
