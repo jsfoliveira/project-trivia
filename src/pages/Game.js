@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
 import './Game.css';
 
@@ -43,6 +44,7 @@ class Game extends React.Component {
       <div>
         <h2>Game!</h2>
         <Header />
+        <Timer />
         {
           results
           && (
