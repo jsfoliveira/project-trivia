@@ -3,12 +3,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
+import './Game.css';
 
 class Game extends React.Component {
   constructor() {
     super();
     this.state = {
       answers: [],
+      click: false,
     };
   }
 
@@ -16,6 +18,12 @@ class Game extends React.Component {
     const { token, questionsToProps } = this.props;
     await questionsToProps(token);
     this.renderAnswer();
+  }
+
+  handleClick = () => {
+    this.setState({
+      click: true,
+    });
   }
 
   renderAnswer = () => {
@@ -30,7 +38,7 @@ class Game extends React.Component {
 
   render() {
     const { questions: { results } } = this.props;
-    const { answers } = this.state;
+    const { answers, click } = this.state;
     return (
       <div>
         <h2>Game!</h2>
@@ -50,14 +58,23 @@ class Game extends React.Component {
             answers.map(
               (answer, index) => {
                 let testid = '';
-                if (answer === results[0].correct_answer) {
+                let classe = '';
+                const correct = results[0].correct_answer;
+                if (answer === correct) {
+                  classe = 'correct-answer';
                   testid = 'correct-answer';
-                } else { testid = `wrong-answer-${index}`; }
+                } else {
+                  classe = 'wrong-answer';
+                  testid = `wrong-answer-${index}`;
+                }
+
                 return (
                   <button
                     key={ index }
                     data-testid={ testid }
                     type="button"
+                    onClick={ this.handleClick }
+                    className={ click ? classe : '' }
                   >
                     {answer}
                   </button>);
