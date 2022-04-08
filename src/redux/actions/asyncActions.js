@@ -1,5 +1,9 @@
 import { requestQuestions, requestToken } from '../services/APIrequest';
-import { GET_QUESTIONS, GET_TOKEN } from './actions.types';
+import {
+  GET_QUESTIONS,
+  GET_TOKEN,
+}
+from './actions.types';
 
 export const tokenAction = ({ token }) => ({
   type: GET_TOKEN,
