@@ -16,22 +16,27 @@ class Timer extends Component {
 
   componentDidUpdate() {
     const { counter } = this.state;
-    const maxTimer = -1;
-    console.log('to atualizando');
+    const maxTimer = 0;
     if (counter === maxTimer) {
-      console.log('limpei o interval');
-      clearInterval(this.clock);
-      this.setState({ counter: 5 });
+      clearInterval(this.interval);
+      console.log('parou o interval');
     }
   }
 
   componentWillUnmount() {
-    clearInterval(this.clock);
+    clearInterval(this.interval);
+  }
+
+  stop = () => {
+    clearInterval(this.interval);
+    this.setState({
+      counter: 5,
+    });
   }
 
   clock = () => {
     const timer = 1000;
-    setInterval(
+    this.interval = setInterval(
       () => {
         this.setState((state) => ({ counter: state.counter - 1 }));
       }, timer,
@@ -40,10 +45,16 @@ class Timer extends Component {
 
   render() {
     const { counter } = this.state;
-
     return (
       <div>
         { counter }
+        <button
+          type="button"
+          onClick={ this.stop }
+        >
+          stop
+
+        </button>
       </div>
     );
   }
