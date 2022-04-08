@@ -24,7 +24,6 @@ export function fetchToken() {
 }
 
 export function fetchQuestions(token) {
-  console.log('token', token);
   return async (dispatch) => {
     try {
       const response = await requestQuestions(token);

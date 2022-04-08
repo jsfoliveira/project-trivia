@@ -13,20 +13,18 @@ class Game extends React.Component {
   }
 
   async componentDidMount() {
-    const { token: { token }, questionsToProps } = this.props;
+    const { token, questionsToProps } = this.props;
     await questionsToProps(token);
     this.renderAnswer();
   }
 
   renderAnswer = () => {
     const { questions: { results } } = this.props;
-    const random = Math.floor(Math.random() * ((results[0].incorrect_answers.length + 1) - 0) + 0);
-    console.log(random);
-    const wrong = results[0].incorrect_answers;
-    const right = results[0].correct_answer;
-    wrong.splice(random, 0, right);
+    const random = 0.5;
+    const anwsersArray = results[0].incorrect_answers.concat(results[0].correct_answer);
+    const shuffledArray = anwsersArray.sort(() => Math.random() - random);
     this.setState({
-      answers: wrong,
+      answers: shuffledArray,
     });
   }
 
@@ -57,12 +55,11 @@ class Game extends React.Component {
                 } else { testid = `wrong-answer-${index}`; }
                 return (
                   <button
-                    key={ answer }
+                    key={ index }
                     data-testid={ testid }
                     type="button"
                   >
                     {answer}
-
                   </button>);
               },
             )
@@ -77,7 +74,11 @@ class Game extends React.Component {
 Game.propTypes = {
   questions: PropTypes.objectOf(PropTypes.array, PropTypes.string).isRequired,
   questionsToProps: PropTypes.func.isRequired,
-  token: PropTypes.string.isRequired,
+  token: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
 };
 
 const mapStateToProps = (state) => ({
