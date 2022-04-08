@@ -1,12 +1,13 @@
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import { timerAction } from '../redux/actions';
 
 class Timer extends Component {
   constructor() {
     super();
     this.state = {
-      counter: 5,
+      counter: 30,
     };
   }
 
@@ -16,22 +17,16 @@ class Timer extends Component {
 
   componentDidUpdate() {
     const { counter } = this.state;
+    const { dispatchTimer } = this.props;
     const maxTimer = 0;
     if (counter === maxTimer) {
       clearInterval(this.interval);
-      console.log('parou o interval');
+      dispatchTimer(true);
     }
   }
 
   componentWillUnmount() {
     clearInterval(this.interval);
-  }
-
-  stop = () => {
-    clearInterval(this.interval);
-    this.setState({
-      counter: 5,
-    });
   }
 
   clock = () => {
@@ -48,31 +43,19 @@ class Timer extends Component {
     return (
       <div>
         { counter }
-        <button
-          type="button"
-          onClick={ this.stop }
-        >
-          stop
-
-        </button>
       </div>
     );
   }
 }
 
-/* const mapDispatchToProps = (state) => (
-  {
-    namePlayer: state.player.name,
-    scorePlayer: state.player.score,
-    emailPlayer: state.player.gravatarEmail,
-  }
-); */
+const mapDispatchToProps = (dispatch) => ({
+  dispatchTimer: (timerIsOver) => dispatch(
+    timerAction(timerIsOver),
+  ),
+});
 
-/* Timer.propTypes = {
-  namePlayer: PropTypes.string.isRequired,
-  emailPlayer: PropTypes.string.isRequired,
-  scorePlayer: PropTypes.string.isRequired,
-}; */
+Timer.propTypes = {
+  dispatchTimer: PropTypes.func.isRequired,
+};
 
-// export default connect(null, mapDispatchToProps)(Timer);
-export default Timer;
+export default connect(null, mapDispatchToProps)(Timer);
