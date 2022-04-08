@@ -32,11 +32,12 @@ export function fetchQuestions(token) {
     try {
       const response = await requestQuestions(token);
       dispatch(questionAction(response));
+      return response;
     } catch (error) {
-      dispatch(error({
-        response_code: 3,
-        results: [],
-      }));
+      // dispatch(error({
+      //   response_code: 3,
+      //   results: [],
+      // }));
     }
   };
 }

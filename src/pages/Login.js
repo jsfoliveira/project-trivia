@@ -18,6 +18,11 @@ class Login extends Component {
     };
   }
 
+  componentDidMount() {
+    const { tokenToProps } = this.props;
+    tokenToProps();
+  }
+
   validateForm = () => {
     const { inputName, inputEmail } = this.state;
     if (inputName !== '' && inputEmail !== '') {
@@ -40,20 +45,15 @@ class Login extends Component {
 
   handleClick = async () => {
     const { inputName, inputEmail } = this.state;
-
     const {
-      tokenToProps,
       questionsToProps,
-      token,
       history,
       dispatchLogin,
     } = this.props;
-
     const user = { name: inputName, gravatarEmail: inputEmail };
     dispatchLogin(user);
-    await tokenToProps();
-    localStorage.setItem('token', token);
-    questionsToProps(token);
+    const { token } = this.props;
+    await questionsToProps(token);
     history.push('/game');
   }
 
@@ -125,14 +125,23 @@ class Login extends Component {
 Login.propTypes = {
   dispatchLogin: PropTypes.func.isRequired,
   tokenToProps: PropTypes.func.isRequired,
-  questionsToProps: PropTypes.func.isRequired,
   token: PropTypes.string,
-  history: PropTypes.objectOf(PropTypes.string, PropTypes.number).isRequired,
+  questionsToProps: PropTypes.func.isRequired,
+  history: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
 };
 
 Login.defaultProps = {
   token: '',
 };
+
+const mapStateToProps = (state) => ({
+  token: state.token.token,
+  questions: state.questions,
+});
 
 const mapDispatchToProps = (dispatch) => ({
   dispatchLogin: (user) => dispatch(
@@ -142,4 +151,4 @@ const mapDispatchToProps = (dispatch) => ({
   questionsToProps: (token) => dispatch(fetchQuestions(token)),
 });
 
-export default connect(null, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);
