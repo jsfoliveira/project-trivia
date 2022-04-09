@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
+import Timer from '../components/Timer';
 import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
 import './Game.css';
 
@@ -43,6 +44,7 @@ class Game extends React.Component {
       <div>
         <h2>Game!</h2>
         <Header />
+        <Timer />
         {
           results
           && (
@@ -67,7 +69,7 @@ class Game extends React.Component {
                   classe = 'wrong-answer';
                   testid = `wrong-answer-${index}`;
                 }
-
+                const { timerIsOver } = this.props;
                 return (
                   <button
                     key={ index }
@@ -75,6 +77,7 @@ class Game extends React.Component {
                     type="button"
                     onClick={ this.handleClick }
                     className={ click ? classe : '' }
+                    disabled={ timerIsOver }
                   >
                     {answer}
                   </button>);
@@ -96,11 +99,13 @@ Game.propTypes = {
     PropTypes.string,
     PropTypes.number,
   ]).isRequired,
+  timerIsOver: PropTypes.bool.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   token: state.token,
   questions: state.questions,
+  timerIsOver: state.timer.timerIsOver,
 });
 
 const mapDispatchToProps = (dispatch) => ({
