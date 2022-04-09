@@ -3,6 +3,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 import Timer from '../components/Timer';
+import { scoreAction } from '../redux/actions';
 import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
 import './Game.css';
 
@@ -21,10 +22,13 @@ class Game extends React.Component {
     this.renderAnswer();
   }
 
-  handleClick = () => {
+  handleClick = ({ target }) => {
     this.setState({
       click: true,
     });
+    const { questions: { results } } = this.props;
+    const isCorrect = target.innerText === results[0].correct_answer;
+    if (isCorrect) this.scoreboard(results[0].difficulty);
   }
 
   renderAnswer = () => {
@@ -37,14 +41,39 @@ class Game extends React.Component {
     });
   }
 
+  scoreboard = (difficulty) => {
+    const { scoreTotal, counter } = this.props;
+    const minPoints = 10;
+    const pesoUm = 1;
+    const pesoDois = 2;
+    const pesoTres = 3;
+    let point = 0;
+    switch (difficulty) {
+    case 'easy':
+      point = minPoints + (counter * pesoUm);
+      scoreTotal(point);
+      break;
+    case 'medium':
+      point = minPoints + (counter * pesoDois);
+      scoreTotal(point);
+      break;
+    case 'hard':
+      point = minPoints + (counter * pesoTres);
+      scoreTotal(point);
+      break;
+    default:
+      break;
+    }
+  }
+
   render() {
     const { questions: { results } } = this.props;
-    const { answers, click } = this.state;
+    const { answers, click, time } = this.state;
     return (
       <div>
         <h2>Game!</h2>
         <Header />
-        <Timer />
+        <Timer stopTime={ click } time={ time } />
         {
           results
           && (
@@ -86,6 +115,12 @@ class Game extends React.Component {
           )
           }
         </div>
+        {
+          click
+          && (
+            <button type="button" data-testid="btn-next">Próxima</button>
+          )
+        }
       </div>
     );
   }
@@ -100,17 +135,23 @@ Game.propTypes = {
     PropTypes.number,
   ]).isRequired,
   timerIsOver: PropTypes.bool.isRequired,
+  scoreTotal: PropTypes.func.isRequired,
+  counter: PropTypes.number.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   token: state.token,
   questions: state.questions,
   timerIsOver: state.timer.timerIsOver,
+  assertions: state.player.assertions,
+  scorePlayer: state.player.score,
+  counter: state.counter,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   tokenToProps: () => dispatch(fetchToken()),
   questionsToProps: (token) => dispatch(fetchQuestions(token)),
+  scoreTotal: (score) => dispatch(scoreAction(score)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Game);

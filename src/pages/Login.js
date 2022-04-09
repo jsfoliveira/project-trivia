@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import loginAction from '../redux/actions';
+import { loginAction } from '../redux/actions';
 import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
 import './Login.css';
 

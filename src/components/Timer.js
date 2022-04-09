@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { timerAction } from '../redux/actions';
+import { getTime, timerAction } from '../redux/actions';
 
 class Timer extends Component {
   constructor() {
@@ -17,11 +17,15 @@ class Timer extends Component {
 
   componentDidUpdate() {
     const { counter } = this.state;
-    const { dispatchTimer } = this.props;
+    const { dispatchTimer, stopTime, timeToProps } = this.props;
     const maxTimer = 0;
     if (counter === maxTimer) {
       clearInterval(this.interval);
       dispatchTimer(true);
+    }
+    if (stopTime) {
+      timeToProps(counter);
+      clearInterval(this.interval);
     }
   }
 
@@ -52,10 +56,13 @@ const mapDispatchToProps = (dispatch) => ({
   dispatchTimer: (timerIsOver) => dispatch(
     timerAction(timerIsOver),
   ),
+  timeToProps: (counter) => dispatch(getTime(counter)),
 });
 
 Timer.propTypes = {
   dispatchTimer: PropTypes.func.isRequired,
+  stopTime: PropTypes.bool.isRequired,
+  timeToProps: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Timer);
