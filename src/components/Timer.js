@@ -17,7 +17,7 @@ class Timer extends Component {
 
   componentDidUpdate() {
     const { counter } = this.state;
-    const { dispatchTimer, stopTime, timeToProps } = this.props;
+    const { dispatchTimer, stopTime, timeToProps, next, reset } = this.props;
     const maxTimer = 0;
     if (counter === maxTimer) {
       clearInterval(this.interval);
@@ -27,6 +27,11 @@ class Timer extends Component {
       timeToProps(counter);
       clearInterval(this.interval);
     }
+    if (next) {
+      clearInterval(this.interval);
+      this.clock();
+      reset();
+    }
   }
 
   componentWillUnmount() {
@@ -34,6 +39,9 @@ class Timer extends Component {
   }
 
   clock = () => {
+    this.setState({
+      counter: 30,
+    });
     const timer = 1000;
     this.interval = setInterval(
       () => {
@@ -63,6 +71,8 @@ Timer.propTypes = {
   dispatchTimer: PropTypes.func.isRequired,
   stopTime: PropTypes.bool.isRequired,
   timeToProps: PropTypes.func.isRequired,
+  next: PropTypes.bool.isRequired,
+  reset: PropTypes.func.isRequired,
 };
 
 export default connect(null, mapDispatchToProps)(Timer);
