@@ -1,6 +1,6 @@
-import { SET_LOGIN, SET_TIMER } from './actions.types';
+import { GET_TIME, SET_ASSERTIONS_SCORE, SET_LOGIN, SET_TIMER } from './actions.types';
 
-const loginAction = ({ name, gravatarEmail }) => ({
+export const loginAction = ({ name, gravatarEmail }) => ({
   type: SET_LOGIN,
   name,
   gravatarEmail,
@@ -11,4 +11,15 @@ export const timerAction = (timerIsOver) => ({
   timerIsOver,
 });
 
-export default loginAction;
+export function scoreAction(score) {
+  return {
+    type: SET_ASSERTIONS_SCORE,
+    score,
+    // assertion,
+  };
+}
+
+export const getTime = (counter) => ({
+  type: GET_TIME,
+  counter,
+});
