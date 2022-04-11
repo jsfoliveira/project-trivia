@@ -2,7 +2,7 @@ import { SET_ASSERTIONS_SCORE, SET_LOGIN } from '../actions/actions.types';
 
 const INITIAL_STATE = {
   name: '',
-  assertions: '',
+  assertions: 0,
   score: 0,
   gravatarEmail: '',
 };
@@ -20,7 +20,7 @@ const player = (state = INITIAL_STATE, action) => {
     return {
       ...state,
       score: state.score + action.score,
-      assertions: state.assertions + action.assertions,
+      assertions: state.assertions,
     };
   default:
     return state;
