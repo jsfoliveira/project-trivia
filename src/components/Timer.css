@@ -1,0 +1,8 @@
+.timer {
+  background-color: var(--dark_blue2);
+  color: var(--light_blue);
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}

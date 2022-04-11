@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { getTime, timerAction } from '../redux/actions';
+import './Timer.css';
 
 class Timer extends Component {
   constructor() {
@@ -53,8 +54,8 @@ class Timer extends Component {
   render() {
     const { counter } = this.state;
     return (
-      <div>
-        { counter }
+      <div className="timer p-2 rounded-circle m-2">
+        { `00:${counter}` }
       </div>
     );
   }

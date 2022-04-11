@@ -94,18 +94,31 @@ class Game extends React.Component {
     const { questions: { results } } = this.props;
     const { answers, click, time, next } = this.state;
     return (
-      <div>
+      <div className="game d-flex flex-column align-items-center">
         <Header />
-        <Timer stopTime={ click } time={ time } next={ next } reset={ this.nextReset } />
-        {
-          results
+        <div
+          className="container-question d-flex
+          justify-content-center rounded m-2 mt-4"
+        >
+          <Timer
+            stopTime={ click }
+            time={ time }
+            next={ next }
+            reset={ this.nextReset }
+          />
+          {
+            results
           && (
-            <div>
+            <div className="card-question p-3 rounded ">
               <p data-testid="question-category">{results[0].category}</p>
-              <p data-testid="question-text">{results[0].question}</p>
+              <h3 data-testid="question-text">{results[0].question}</h3>
             </div>)
-        }
-        <div data-testid="answer-options">
+          }
+        </div>
+        <div
+          data-testid="answer-options"
+          className="buttons d-flex justify-content-center w-75"
+        >
           {
             answers
           && (
@@ -115,10 +128,10 @@ class Game extends React.Component {
                 let classe = '';
                 const correct = results[0].correct_answer;
                 if (answer === correct) {
-                  classe = 'correct-answer';
+                  classe = 'btn btn-success mb-1 correct-answer';
                   testid = 'correct-answer';
                 } else {
-                  classe = 'wrong-answer';
+                  classe = 'btn btn-danger mb-1 wrong-answer';
                   testid = `wrong-answer-${index}`;
                 }
                 const { timerIsOver } = this.props;
@@ -128,7 +141,7 @@ class Game extends React.Component {
                     data-testid={ testid }
                     type="button"
                     onClick={ this.handleClick }
-                    className={ click ? classe : '' }
+                    className={ click ? classe : 'btn btn-primary mb-1' }
                     disabled={ timerIsOver }
                   >
                     {answer}
@@ -145,6 +158,7 @@ class Game extends React.Component {
               type="button"
               data-testid="btn-next"
               onClick={ this.handleNext }
+              className="btn btn-primary"
             >
               Próxima
 

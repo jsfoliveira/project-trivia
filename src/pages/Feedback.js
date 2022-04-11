@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Header from '../components/Header';
 
@@ -12,39 +11,55 @@ class Feedback extends React.Component {
     const numberMin = 120;
     const mensagem = scorePlayer >= numberMin ? rightAnswer : wrongAnswer;
     return (
-      <div>
+      <div className="min-vw-100 min-vh-100">
         <Header />
-        <h1 data-testid="feedback-text">
-          Feedback
-          { mensagem }
-        </h1>
-        <div>
-          Pontuação:
-          <div data-testid="feedback-total-score">
-            { scorePlayer }
-          </div>
-        </div>
-        <p
-          data-testid="feedback-total-question"
+        <div
+          className="d-flex flex-column
+          justify-content-center align-items-center p-3"
         >
-          { assertions }
-        </p>
-        <Link to="/">
-          <button
-            type="button"
-            data-testid="btn-play-again"
+
+          <h1 data-testid="feedback-text">
+            { mensagem }
+          </h1>
+          <div className="d-flex">
+            Pontuação:
+            <div data-testid="feedback-total-score">
+              { scorePlayer }
+            </div>
+          </div>
+          <p
+            data-testid="feedback-total-question"
           >
-            Play Again
-          </button>
-        </Link>
-        <Link to="/ranking">
-          <button
-            type="button"
-            data-testid="btn-ranking"
-          >
-            Ranking
-          </button>
-        </Link>
+            Acertos:
+            { assertions }
+          </p>
+          <div className="w-100 d-flex flex-column">
+            <button
+              type="button"
+              data-testid="btn-play-again"
+              className="btn btn-primary mb-1"
+              onClick={ () => {
+                const { history } = this.props;
+                history.push('/');
+              } }
+            >
+              Play Again
+            </button>
+            <button
+              type="button"
+              data-testid="btn-ranking"
+              className="btn btn-warning"
+              onClick={ () => {
+                const { history } = this.props;
+                history.push('/ranking');
+              } }
+            >
+              Ranking
+            </button>
+          </div>
+
+        </div>
+
       </div>
     );
   }
@@ -58,6 +73,11 @@ const mapStateToProps = (state) => ({
 Feedback.propTypes = {
   scorePlayer: PropTypes.number.isRequired,
   assertions: PropTypes.number.isRequired,
+  history: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
 };
 
 export default connect(mapStateToProps)(Feedback);

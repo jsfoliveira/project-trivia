@@ -6,3 +6,26 @@
 .wrong-answer {
   border: 3px solid red;
 }
+
+.game {
+  background-color: var(--light_blue);
+  height: 100vh;
+}
+
+.card-question {
+  align-items: center;
+  background-color: var(--light_blue2);
+  color: var(--light_blue);
+  display: flex;
+  flex-direction: column;
+  height: 40vh;
+  justify-content: center;
+}
+
+.container-question {
+  position: relative;
+}
+
+.buttons {
+  flex-direction: column;
+}
