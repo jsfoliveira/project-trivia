@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 class Ranking extends React.Component {
   render() {
@@ -9,6 +10,11 @@ class Ranking extends React.Component {
         >
           Ranking
         </h1>
+        <Link to="/">
+          <button data-testid="btn-go-home" type="button">
+            Sair
+          </button>
+        </Link>
       </div>
     );
   }

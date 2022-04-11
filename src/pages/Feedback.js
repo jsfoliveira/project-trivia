@@ -18,12 +18,13 @@ class Feedback extends React.Component {
           Feedback
           { mensagem }
         </h1>
-        <p
-          data-testid="feedback-total-score"
-        >
-          Score total:
-          { scorePlayer }
-        </p>
+        <div>
+          Pontuação:
+          <div data-testid="feedback-total-score">
+            { scorePlayer === '0' && Number(0) }
+            { scorePlayer !== '0' && Number(scorePlayer) }
+          </div>
+        </div>
         <p
           data-testid="feedback-total-question"
         >
