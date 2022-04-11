@@ -11,11 +11,11 @@ export const timerAction = (timerIsOver) => ({
   timerIsOver,
 });
 
-export function scoreAction(score) {
+export function scoreAction(score, assertions) {
   return {
     type: SET_ASSERTIONS_SCORE,
     score,
-    // assertion,
+    assertions,
   };
 }
 
