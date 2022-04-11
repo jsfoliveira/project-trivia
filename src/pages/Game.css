@@ -1,0 +1,8 @@
+/* Regra de negócio para as respostas corretas e erradas */
+.correct-answer {
+  border: 3px solid rgb(6, 240, 15);
+}
+
+.wrong-answer {
+  border: 3px solid red;
+}

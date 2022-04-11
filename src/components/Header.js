@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 class Header extends Component {
   render() {
     const { namePlayer, scorePlayer, emailPlayer } = this.props;
+    console.log(scorePlayer);
     return (
       <header>
         <h1
@@ -39,7 +40,7 @@ const mapStateToProps = (state) => (
 Header.propTypes = {
   namePlayer: PropTypes.string.isRequired,
   emailPlayer: PropTypes.string.isRequired,
-  scorePlayer: PropTypes.string.isRequired,
+  scorePlayer: PropTypes.number.isRequired,
 };
 
 export default connect(mapStateToProps)(Header);

@@ -1,9 +1,9 @@
-import { SET_LOGIN } from '../actions/actions.types';
+import { SET_ASSERTIONS_SCORE, SET_LOGIN } from '../actions/actions.types';
 
 const INITIAL_STATE = {
   name: '',
   assertions: '',
-  score: '0',
+  score: 0,
   gravatarEmail: '',
 };
 
@@ -15,6 +15,12 @@ const player = (state = INITIAL_STATE, action) => {
       ...state,
       name,
       gravatarEmail,
+    };
+  case SET_ASSERTIONS_SCORE:
+    return {
+      ...state,
+      score: state.score + action.score,
+      assertions: state.assertions + action.assertions,
     };
   default:
     return state;
