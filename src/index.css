@@ -1,13 +1,15 @@
+:root {
+  --dark_blue: rgb(5, 19, 103);
+  --dark_blue2: rgb(45, 49, 250);
+  --light_blue: rgb(223, 246, 255);
+  --light_blue2: rgb(92, 138, 245);
+}
+
+
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: 'Roboto', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}

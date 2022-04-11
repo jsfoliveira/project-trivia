@@ -2,11 +2,10 @@ import PropTypes from 'prop-types';
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { AiOutlineSetting } from 'react-icons/ai';
 import { loginAction } from '../redux/actions';
 import { fetchQuestions, fetchToken } from '../redux/actions/asyncActions';
 import './Login.css';
-
-// import logo from './trivia.png';
 
 class Login extends Component {
   constructor() {
@@ -45,6 +44,20 @@ class Login extends Component {
 
   handleClick = async () => {
     const { inputName, inputEmail } = this.state;
+    const song = new Audio('../assets/torcida.mp3');
+    console.log(song);
+    const playPromise = song.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          playPromise();
+          console.log('audio played auto');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
     const {
       questionsToProps,
       history,
@@ -91,32 +104,25 @@ class Login extends Component {
               />
 
             </label>
-            <div
-              id="emailHelp"
-              className="form-text"
-            >
-              We will never share your email with anyone else.
-            </div>
           </div>
-          <button
-            type="button"
-            className="btn btn-primary"
-            data-testid="btn-play"
-            disabled={ turnOn }
-            onClick={ this.handleClick }
-          >
-            Play
-          </button>
-          <Link to="/setting">
+          <div className="d-grid">
             <button
               type="button"
-              data-testid="btn-settings"
+              className="btn btn-primary"
+              data-testid="btn-play"
+              disabled={ turnOn }
+              onClick={ this.handleClick }
             >
-              Configurações
+              Play
             </button>
-          </Link>
-
+          </div>
         </form>
+        <Link to="/setting">
+          <AiOutlineSetting
+            data-testid="btn-settings"
+            className="settings"
+          />
+        </Link>
       </div>
     );
   }
