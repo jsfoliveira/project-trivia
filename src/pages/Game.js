@@ -13,6 +13,8 @@ class Game extends React.Component {
     this.state = {
       answers: [],
       click: false,
+      next: false,
+      resposta: 0,
     };
   }
 
@@ -34,7 +36,9 @@ class Game extends React.Component {
   renderAnswer = () => {
     const { questions: { results } } = this.props;
     const random = 0.5;
-    const anwsersArray = results[0].incorrect_answers.concat(results[0].correct_answer);
+    const anwsersArray = results[0].incorrect_answers.concat(
+      results[0].correct_answer,
+    );
     const shuffledArray = anwsersArray.sort(() => Math.random() - random);
     this.setState({
       answers: shuffledArray,
@@ -66,14 +70,34 @@ class Game extends React.Component {
     }
   }
 
+  handleNext = async () => {
+    const { resposta } = this.state;
+    const { token, questionsToProps, history } = this.props;
+    const maxQuestions = 4;
+    if (resposta === maxQuestions) history.push('/feedback');
+    await questionsToProps(token);
+    this.setState({
+      resposta: resposta + 1,
+      click: false,
+      next: true,
+    });
+    this.renderAnswer();
+  }
+
+  nextReset= () => {
+    this.setState({
+      next: false,
+    });
+  }
+
   render() {
     const { questions: { results } } = this.props;
-    const { answers, click, time } = this.state;
+    const { answers, click, time, next } = this.state;
     return (
       <div>
         <h2>Game!</h2>
         <Header />
-        <Timer stopTime={ click } time={ time } />
+        <Timer stopTime={ click } time={ time } next={ next } reset={ this.nextReset } />
         {
           results
           && (
@@ -118,7 +142,14 @@ class Game extends React.Component {
         {
           click
           && (
-            <button type="button" data-testid="btn-next">Próxima</button>
+            <button
+              type="button"
+              data-testid="btn-next"
+              onClick={ this.handleNext }
+            >
+              Próxima
+
+            </button>
           )
         }
       </div>
@@ -137,6 +168,11 @@ Game.propTypes = {
   timerIsOver: PropTypes.bool.isRequired,
   scoreTotal: PropTypes.func.isRequired,
   counter: PropTypes.number.isRequired,
+  history: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.string,
+    PropTypes.number,
+  ]).isRequired,
 };
 
 const mapStateToProps = (state) => ({
