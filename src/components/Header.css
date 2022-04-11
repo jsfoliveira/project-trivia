@@ -1,0 +1,13 @@
+.header {
+  background-color: var(--dark_blue);
+  color: var(--light_blue);
+  font-size: 400;
+}
+
+.header .rounded-pill {
+  background-color: var(--light_blue2);
+}
+
+.header img {
+  width: 50px;
+}

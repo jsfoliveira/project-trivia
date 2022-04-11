@@ -95,7 +95,6 @@ class Game extends React.Component {
     const { answers, click, time, next } = this.state;
     return (
       <div>
-        <h2>Game!</h2>
         <Header />
         <Timer stopTime={ click } time={ time } next={ next } reset={ this.nextReset } />
         {
